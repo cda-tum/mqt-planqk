@@ -1,0 +1,10 @@
+{
+  "name": "mqt-ddsim",
+  "description": "MQT DDSIM - A quantum circuit simulator based on decision diagrams written in C++",
+  "resources": {
+    "cpu": 1,
+    "memory": 4
+  },
+  "runtime": "PYTHON_TEMPLATE",
+  "serviceId": "4de5b5f2-222e-4cda-b159-6c255ac6abc2"
+}
