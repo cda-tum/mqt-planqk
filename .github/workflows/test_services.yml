@@ -21,6 +21,7 @@ jobs:
           - mqt-ddsim
           - mqt-qcec
           - mqt-qmap
+          - mqt-bench
     steps:
       - name: Checkout
         uses: actions/checkout@v4
