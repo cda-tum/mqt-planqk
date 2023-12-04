@@ -1,0 +1,41 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  test_services:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - mqt-ddsim
+          - mqt-qcec
+          - mqt-qmap
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+          cache: "pip"
+      - name: Create and activate conda environment
+        run: |
+          pip install -U pip setuptools wheel virtualenv
+          python -m virtualenv .venv
+          source .venv/bin/activate
+      - name: Install dependencies
+        run: pip install -r ${{ matrix.service }}/requirements.txt
+      - name: Run service
+        working-directory: ${{ matrix.service }}
+        run: python -m src
