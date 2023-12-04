@@ -12,11 +12,11 @@ from qiskit.qasm2 import dumps
 from .libs.return_objects import ErrorResponse, ResultResponse
 
 
-def run(_data: dict[str, Any] | None = None, params: dict[str, Any] | None = None) -> ResultResponse | ErrorResponse:
+def run(data: dict[str, Any] | None = None, params: dict[str, Any] | None = None) -> ResultResponse | ErrorResponse:  # noqa: ARG001
     """Default entry point.
 
     Parameters:
-        _data: The input data sent by the client
+        data: The input data sent by the client
         params: Contains parameters, which can be set by the client to configure the execution.
 
     Returns:
