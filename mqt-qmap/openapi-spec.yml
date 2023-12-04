@@ -1,0 +1,333 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: Managed PlanQK Service
+  description: |
+    Generic API description for a managed PlanQK Service.
+components:
+  schemas:
+    inputData:
+      type: object
+      properties:
+        qc:
+          type: string
+          description: The input quantum circuit given as an OpenQASM 2 string
+          example: |
+            OPENQASM 2.0;
+            include "qelib1.inc";
+            qreg q[3];
+            creg c[3];
+            h q[0];
+            cx q[0],q[1];
+            cx q[0],q[2];
+            measure q -> c;
+        arch_num_qubits:
+          type: integer
+          description: The number of qubits of the architecture
+          example: 5
+        arch_coupling_map:
+          type: string
+          description: The coupling map of the architecture specified as a set of tuples of integers
+          example: |
+            {(0, 1), (1, 0), (1, 2), (2, 1), (1, 3), (3, 1), (3, 4), (4, 3)}
+    inputParams:
+      type: object
+      properties:
+        method:
+          type: string
+          description: The method to use for the mapping procedure (either "heuristic" or "exact"; default="heuristic")
+          example: "heuristic"
+    interimResultResponse:
+      type: object
+    resultResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          description: Main result of the computation
+          properties:
+            qc_mapped:
+              type: string
+              description: The mapped quantum circuit given as an OpenQASM 2 string. Note that the resulting file also contains metadata about the input and output permutations as a comment.
+              example: |
+                // i 1 2 0 3 4
+                // o 1 2 0
+                OPENQASM 2.0;
+                include \"qelib1.inc\";
+                qreg q[5];
+                creg c[3];
+                h q[1];
+                cx q[1], q[2];
+                cx q[1], q[0];
+                barrier q;
+                measure q[0] -> c[2];
+                measure q[1] -> c[0];
+                measure q[2] -> c[1];
+        metadata:
+          type: object
+          description: Additional information about the execution
+          properties:
+            qmap_results:
+              type: object
+              description: The results as reported by QMAP
+              example: |
+                {
+                  "circuit": {
+                    "cnots": 2,
+                    "gates": 3,
+                    "name": "circuit-152",
+                    "qubits": 3,
+                    "single_qubit_gates": 1
+                  },
+                  "config": {
+                    "add_measurements_to_mapped_circuit": true,
+                    "debug": false,
+                    "layering_strategy":
+                    "individual_gates",
+                    "method": "exact",
+                    "post_mapping_optimizations": true,
+                    "pre_mapping_optimizations": true,
+                    "settings": {
+                      "commander_grouping": "fixed3",
+                      "encoding": "commander",
+                      "include_WCNF": false,
+                      "limits": {
+                        "swap_limit": 1,
+                        "swap_reduction": "coupling_limit",
+                        "use_bdd": false
+                      },
+                      "timeout": 3600000,
+                      "use_subsets": true
+                    },
+                    "verbose": false
+                  },
+                  "mapped_circuit": {
+                    "cnots": 2,
+                    "gates": 3,
+                    "name": "circuit-152_mapped",
+                    "qasm": "// i 1 2 0 3 4\n// o 1 2 0\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[5];\ncreg c[3];\nh q[1];\ncx q[1], q[2];\ncx q[1], q[0];\nbarrier q;\nmeasure q[0] -> c[2];\nmeasure q[1] -> c[0];\nmeasure q[2] -> c[1];\n",
+                    "qubits": 5,
+                    "single_qubit_gates": 1
+                  },
+                  "statistics": {
+                    "additional_gates": 0,
+                    "arch": "generic_5",
+                    "direction_reverse": 0,
+                    "layers": 3,
+                    "mapping_time": 0.008068634,
+                    "swaps": 0,
+                    "timeout": false
+                  }
+                }
+            execution_time:
+              type: number
+              description: The overall execution time of the computation
+              example: 0.123
+    errorResponse:
+      # adapt the schema of this error response to your needs
+      type: object
+      properties:
+        code:
+          type: string
+          description: service-specific error code representing the type of problem encountered
+        detail:
+          type: string
+          description: service-specific error message describing the detail of the problem encountered
+    job:
+      # do NOT change this schema
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum: [UNKNOWN, PENDING, RUNNING, SUCCEEDED, CANCELLED, FAILED]
+        createdAt:
+          type: string
+        startedAt:
+          type: string
+        endedAt:
+          type: string
+      example:
+        id: 87cb778e-ac43-11ec-b909-0242ac120002
+        status: SUCCEEDED
+        createdAt: "2022-01-01 22:38:08"
+        startedAt: "2022-01-01 22:39:08"
+        endedAt: "2022-01-01 22:40:08"
+paths:
+  /:
+    get:
+      tags:
+        - Status API
+      summary: Health checking endpoint
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    title: Status of the service
+                    type: string
+                    example: Service is up and running
+    post:
+      tags:
+        - Service API
+      summary: Asynchronous execution of the service
+      description: This method starts an execution of the service, which in turn is processed asynchronously by the platform. The location header of the response contains the URL which can be used to query the status and the result of the execution.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: "#/components/schemas/inputData"
+                params:
+                  $ref: "#/components/schemas/inputParams"
+      responses:
+        "201":
+          description: Execution of the service started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/job"
+          headers:
+            Location:
+              description: URL to query the status and the result of the execution
+              schema:
+                type: string
+        "400":
+          description: Invalid input
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
+  /{id}:
+    get:
+      tags:
+        - Service API
+      summary: Check execution status
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of a certain execution
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/job"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
+  /{id}/result:
+    get:
+      tags:
+        - Service API
+      summary: Get the result of an execution
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of a certain execution
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/resultResponse"
+                  - $ref: "#/components/schemas/errorResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
+  /{id}/interim-results:
+    get:
+      tags:
+        - Service API
+      summary: Get the last or a list of interim results of an execution
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of a certain execution
+          schema:
+            type: string
+        - in: query
+          name: last
+          required: false
+          description: |
+            Either true or false to show only the last or all interim results (default: false)
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: array
+                    items:
+                      $ref: "#/components/schemas/interimResultResponse"
+                  - $ref: "#/components/schemas/interimResultResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
+  /{id}/cancel:
+    put:
+      tags:
+        - Service API
+      summary: Cancel an execution
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of a certain execution
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/job"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error

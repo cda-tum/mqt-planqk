@@ -1,0 +1,10 @@
+name: mqt-qmap
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.8,<3.13
+  - pip>=21
+  - pip:
+      - -r requirements.txt
+variables:
+  LOG_LEVEL: INFO # DEBUG, INFO, WARNING, ERROR, CRITICAL
