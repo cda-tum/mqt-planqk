@@ -1,0 +1,4 @@
+{
+  "qc1": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncx q[0],q[1];\n",
+  "qc2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[1];\ncz q[0],q[1];\nh q[1];\n"
+}

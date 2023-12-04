@@ -1,0 +1,10 @@
+{
+  "name": "mqt-qcec",
+  "description": "MQT QCEC - A tool for Quantum Circuit Equivalence Checking written in C++",
+  "resources": {
+    "cpu": 1,
+    "memory": 4
+  },
+  "runtime": "PYTHON_TEMPLATE",
+  "serviceId": "e80de5b0-3f90-404b-8d14-746f04f6230e"
+}

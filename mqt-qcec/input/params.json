@@ -1,0 +1,8 @@
+{
+  "parallel": true,
+  "run_alternating_checker": true,
+  "run_construction_checker": false,
+  "run_simulation_checker": true,
+  "run_zx_checker": true,
+  "timeout": 60
+}
