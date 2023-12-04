@@ -21,13 +21,14 @@ jobs:
           - mqt-ddsim
           - mqt-qcec
           - mqt-qmap
+          - mqt-bench
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.x
+          python-version: 3.11.x
           cache: "pip"
       - name: Create and activate conda environment
         run: |

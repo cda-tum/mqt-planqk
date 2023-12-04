@@ -24,6 +24,9 @@ updates:
       qmap-dependencies:
         patterns:
           - "/mqt-qmap/*"
+      bench-dependencies:
+        patterns:
+          - "/mqt-bench/*"
     schedule:
       interval: "weekly"
       day: "monday"

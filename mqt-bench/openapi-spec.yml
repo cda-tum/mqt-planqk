@@ -1,0 +1,274 @@
+openapi: 3.0.0
+info:
+  version: "1.0.7"
+  title: MQT Bench
+  description: |
+    API description for the MQT Bench service.
+components:
+  schemas:
+    inputData:
+      type: object
+    inputParams:
+      type: object
+      properties:
+        benchmark_name:
+          type: string
+          description: |
+            The name of the benchmark to be executed.
+            See https://mqt.readthedocs.io/projects/bench/en/latest/Benchmark_selection.html for a list of available benchmarks.
+          example: "ghz"
+        circuit_size:
+          type: integer
+          description: |
+            The size of the circuit to be executed.
+            The meaning of this parameter depends on the benchmark.
+            For most benchmarks, it is the number of qubits.
+            Need not be specified for the "shor" and "groundstate" benchmarks.
+          example: 3
+        benchmark_instance_name:
+          type: string
+          description: |
+            The name of the benchmark instance to be executed.
+            Must be specified for the "shor" and "groundstate" benchmarks.
+            Can be either "small", "medium", or "large" for both benchmarks and "xsmall" or "xlarge" in addition for the "shor" benchmark.
+          example: "small"
+    interimResultResponse:
+      type: object
+    resultResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          description: Main result of the computation
+          properties:
+            qc:
+              type: string
+              description: The resulting circuit given as an OpenQASM 2 string
+              example: |
+                OPENQASM 2.0;
+                include "qelib1.inc";
+                qreg q[3];
+                creg meas[3];
+                h q[2];
+                cx q[2],q[1];
+                cx q[1],q[0];
+                barrier q[0],q[1],q[2];
+                measure q[0] -> meas[0];
+                measure q[1] -> meas[1];
+                measure q[2] -> meas[2];
+        metadata:
+          type: object
+          description: Additional information about the execution
+          properties:
+            execution_time:
+              type: number
+              description: The overall execution time of the computation
+              example: 0.123
+    errorResponse:
+      # adapt the schema of this error response to your needs
+      type: object
+      properties:
+        code:
+          type: string
+          description: service-specific error code representing the type of problem encountered
+        detail:
+          type: string
+          description: service-specific error message describing the detail of the problem encountered
+    job:
+      # do NOT change this schema
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum: [UNKNOWN, PENDING, RUNNING, SUCCEEDED, CANCELLED, FAILED]
+        createdAt:
+          type: string
+        startedAt:
+          type: string
+        endedAt:
+          type: string
+      example:
+        id: 87cb778e-ac43-11ec-b909-0242ac120002
+        status: SUCCEEDED
+        createdAt: "2022-01-01 22:38:08"
+        startedAt: "2022-01-01 22:39:08"
+        endedAt: "2022-01-01 22:40:08"
+paths:
+  /:
+    get:
+      tags:
+        - Status API
+      summary: Health checking endpoint
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    title: Status of the service
+                    type: string
+                    example: Service is up and running
+    post:
+      tags:
+        - Service API
+      summary: Asynchronous execution of the service
+      description: This method starts an execution of the service, which in turn is processed asynchronously by the platform. The location header of the response contains the URL which can be used to query the status and the result of the execution.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: "#/components/schemas/inputData"
+                params:
+                  $ref: "#/components/schemas/inputParams"
+      responses:
+        "201":
+          description: Execution of the service started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/job"
+          headers:
+            Location:
+              description: URL to query the status and the result of the execution
+              schema:
+                type: string
+        "400":
+          description: Invalid input
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
+  /{id}:
+    get:
+      tags:
+        - Service API
+      summary: Check execution status
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of a certain execution
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/job"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
+  /{id}/result:
+    get:
+      tags:
+        - Service API
+      summary: Get the result of an execution
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of a certain execution
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/resultResponse"
+                  - $ref: "#/components/schemas/errorResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
+  /{id}/interim-results:
+    get:
+      tags:
+        - Service API
+      summary: Get the last or a list of interim results of an execution
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of a certain execution
+          schema:
+            type: string
+        - in: query
+          name: last
+          required: false
+          description: |
+            Either true or false to show only the last or all interim results (default: false)
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: array
+                    items:
+                      $ref: "#/components/schemas/interimResultResponse"
+                  - $ref: "#/components/schemas/interimResultResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
+  /{id}/cancel:
+    put:
+      tags:
+        - Service API
+      summary: Cancel an execution
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of a certain execution
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/job"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
