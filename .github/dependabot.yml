@@ -1,0 +1,47 @@
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "06:00"
+      timezone: "Europe/Vienna"
+
+  - package-ecosystem: "pip"
+    directory: "/mqt-ddsim"
+    groups:
+      ddsim-dependencies:
+        patterns:
+          - "*"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Europe/Vienna"
+
+  - package-ecosystem: "pip"
+    directory: "/mqt-qmap"
+    groups:
+      qmap-dependencies:
+        patterns:
+          - "*"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Europe/Vienna"
+
+  - package-ecosystem: "pip"
+    directory: "/mqt-qcec"
+    groups:
+      qcec-dependencies:
+        patterns:
+          - "*"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Europe/Vienna"
