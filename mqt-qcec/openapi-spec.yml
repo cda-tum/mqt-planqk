@@ -71,14 +71,22 @@ components:
           type: object
           description: Additional information about the execution
           properties:
-            preprocessing_time:
-              type: number
-              description: The time needed for preprocessing the inputs
-              example: 0.003
-            check_time:
-              type: number
-              description: The time needed for the actual check
-              example: 0.12
+            qcec_results:
+              type: object
+              description: The results as reported by QCEC
+              example: |
+                {
+                  "check_time": 0.000525548,
+                  "equivalence": "equivalent",
+                  "parameterized": {
+                    "performed_instantiations": 0
+                  },
+                  "preprocessing_time": 0.000143717,
+                  "simulations": {
+                    "performed": 0,
+                    "started": 4
+                  }
+                }
             execution_time:
               type: number
               description: The overall execution time of the computation

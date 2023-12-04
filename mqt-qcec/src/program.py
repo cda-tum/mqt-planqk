@@ -60,8 +60,7 @@ def run(data: dict[str, Any] | None = None, params: dict[str, Any] | None = None
         "equivalence": results.equivalence,
     }
     metadata = {
-        "preprocessing_time": round(results.preprocessing_time, 4),
-        "check_time": round(results.check_time, 4),
+        "qcec_results": results.json(),
         "execution_time": round(execution_time, 4),
     }
     logger.info("Calculation successfully executed")
