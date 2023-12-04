@@ -1,0 +1,12 @@
+name: mqt-bench
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.9,<3.12
+  - pip>=21
+  - fastdtw
+  - docplex!=2.24.231,>=2.21.207
+  - pip:
+      - -r requirements.txt
+variables:
+  LOG_LEVEL: INFO # DEBUG, INFO, WARNING, ERROR, CRITICAL
