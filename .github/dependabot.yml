@@ -1,0 +1,31 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "06:00"
+      timezone: "Europe/Vienna"
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    groups:
+      ddsim-dependencies:
+        patterns:
+          - "/mqt-ddsim/*"
+      qcec-dependencies:
+        patterns:
+          - "/mqt-qcec/*"
+      qmap-dependencies:
+        patterns:
+          - "/mqt-qmap/*"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Europe/Vienna"
