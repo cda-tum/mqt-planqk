@@ -1,9 +1,9 @@
 openapi: 3.0.0
 info:
-  version: "1.0"
-  title: Managed PlanQK Service
+  version: "1.20.2"
+  title: MQT DDSIM
   description: |
-    Generic API description for a managed PlanQK Service.
+    API description for the MQT DDSIM service.
 components:
   schemas:
     inputData:

@@ -1,9 +1,9 @@
 openapi: 3.0.0
 info:
-  version: "1.0"
-  title: Managed PlanQK Service
+  version: "2.4.2"
+  title: MQT QMAP
   description: |
-    Generic API description for a managed PlanQK Service.
+    API description for the MQT QMAP service.
 components:
   schemas:
     inputData:
