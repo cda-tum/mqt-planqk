@@ -3,7 +3,7 @@
   "description": "MQT QMAP - A tool for Quantum Circuit Mapping written in C++",
   "resources": {
     "cpu": 1,
-    "memory": 4
+    "memory": 8
   },
   "runtime": "PYTHON_TEMPLATE",
   "serviceId": "eb554bbb-1f1d-40f7-bf58-c741ba9e4abc"

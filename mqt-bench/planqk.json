@@ -3,7 +3,7 @@
   "description": "MQT Bench - A tool for Benchmarking Software and Design Automation Tools for Quantum Computing",
   "resources": {
     "cpu": 1,
-    "memory": 4
+    "memory": 8
   },
   "runtime": "PYTHON_TEMPLATE",
   "serviceId": "f70581c4-ec9c-4eaf-9001-2acc74902c1c"
