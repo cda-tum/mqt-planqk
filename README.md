@@ -13,6 +13,7 @@ Currently, the following services are available:
 - [MQT DDSIM](https://github.com/cda-tum/mqt-ddsim): A Tool for Classical Quantum Circuit Simulation based on Decision Diagrams.
 - [MQT QMAP](https://github.com/cda-tum/mqt-qmap): A Tool for Quantum Circuit Mapping.
 - [MQT QCEC](https://github.com/cda-tum/mqt-qcec): A Tool for Quantum Circuit Equivalence Checking.
+- [MQT Bench](https://github.com/cda-tum/mqt-bench): A tool for Benchmarking Software and Design Automation Tools for Quantum Computing.
 
 For a full list of tools and libraries available as part of the MQT, please visit the [MQT website](https://mqt.readthedocs.io/).
 
