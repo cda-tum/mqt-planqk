@@ -1,5 +1,4 @@
-"""Template for implementing services running on the PlanQK platform
-"""
+"""Template for implementing services running on the PlanQK platform"""
 
 from __future__ import annotations
 
