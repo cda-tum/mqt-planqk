@@ -1,5 +1,5 @@
 {
-  "qc": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nh q[0];\ncx q[0],q[1];\ncx q[0],q[2];\nmeasure q -> c;\n",
+  "qc": "OPENQASM 3.0;\ninclude \"stdgates.inc\";\nqubit[3] q;\nbit[3] c;\nh q[0];\ncx q[0],q[1];\ncx q[0],q[2];\nc = measure q;\n",
   "arch_num_qubits": 5,
   "arch_coupling_map": "{(0, 1), (1, 0), (1, 2), (2, 1), (1, 3), (3, 1), (3, 4), (4, 3)}"
 }

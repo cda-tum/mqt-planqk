@@ -8,7 +8,7 @@ from typing import Any
 
 from loguru import logger
 from mqt.qmap import Architecture, compile
-from qiskit.qasm2 import loads
+from qiskit.qasm3 import loads
 
 from .libs.return_objects import ErrorResponse, ResultResponse
 
@@ -23,8 +23,8 @@ def run(data: dict[str, Any] | None = None, params: dict[str, Any] | None = None
     Returns:
         response: Response as arbitrary json-serializable dict or an error to be passed back to the client.
     """
-    qc_qasm2: str | None = data.get("qc")
-    if qc_qasm2 is None:
+    qc_qasm: str | None = data.get("qc")
+    if qc_qasm is None:
         return ErrorResponse(code="400", detail="No input circuit provided.")
 
     arch_num_qubits: int | None = data.get("arch_num_qubits")
@@ -41,7 +41,7 @@ def run(data: dict[str, Any] | None = None, params: dict[str, Any] | None = None
     # Configuration options for the mapper
     method = params.get("method", "heuristic")
 
-    qc = loads(qc_qasm2)
+    qc = loads(qc_qasm)
 
     logger.info("Starting execution...")
     start_time = time.time()

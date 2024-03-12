@@ -11,16 +11,16 @@ components:
       properties:
         qc:
           type: string
-          description: The input quantum circuit given as an OpenQASM 2 string
+          description: The input quantum circuit given as an OpenQASM 2/3 string
           example: |
-            OPENQASM 2.0;
-            include "qelib1.inc";
-            qreg q[3];
-            creg c[3];
+            OPENQASM 3.0;
+            include "stdgates.inc";
+            qubit[3] q;
+            bit[3] c;
             h q[0];
             cx q[0],q[1];
             cx q[0],q[2];
-            measure q -> c;
+            c = measure q;
         arch_num_qubits:
           type: integer
           description: The number of qubits of the architecture
@@ -48,21 +48,21 @@ components:
           properties:
             qc_mapped:
               type: string
-              description: The mapped quantum circuit given as an OpenQASM 2 string. Note that the resulting file also contains metadata about the input and output permutations as a comment.
+              description: The mapped quantum circuit given as an OpenQASM 3 string. Note that the resulting file also contains metadata about the input and output permutations as a comment.
               example: |
                 // i 1 2 0 3 4
                 // o 1 2 0
-                OPENQASM 2.0;
-                include \"qelib1.inc\";
-                qreg q[5];
-                creg c[3];
+                OPENQASM 3.0;
+                include \"stdgates.inc\";
+                qubit[5] q;
+                bit[3] c;
                 h q[1];
                 cx q[1], q[2];
                 cx q[1], q[0];
                 barrier q;
-                measure q[0] -> c[2];
-                measure q[1] -> c[0];
-                measure q[2] -> c[1];
+                c[2] = measure q[0];
+                c[0] = measure q[1];
+                c[1] = measure q[2];
         metadata:
           type: object
           description: Additional information about the execution
@@ -105,7 +105,7 @@ components:
                     "cnots": 2,
                     "gates": 3,
                     "name": "circuit-152_mapped",
-                    "qasm": "// i 1 2 0 3 4\n// o 1 2 0\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[5];\ncreg c[3];\nh q[1];\ncx q[1], q[2];\ncx q[1], q[0];\nbarrier q;\nmeasure q[0] -> c[2];\nmeasure q[1] -> c[0];\nmeasure q[2] -> c[1];\n",
+                    "qasm": "// i 1 2 0 3 4\n// o 1 2 0\nOPENQASM 3.0;\ninclude \"stdgates.inc\";\nqubit[5] q;\nbit[3] c;\nh q[1];\ncx q[1], q[2];\ncx q[1], q[0];\nbarrier q;\nc[2] = measure q[0];\nc[0] = measure q[1];\nc[1] = measure q[2];\n",
                     "qubits": 5,
                     "single_qubit_gates": 1
                   },
