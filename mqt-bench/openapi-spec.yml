@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.0.7"
+  version: "1.0.8"
   title: MQT Bench
   description: |
     API description for the MQT Bench service.
