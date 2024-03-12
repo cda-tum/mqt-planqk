@@ -7,7 +7,7 @@ from typing import Any
 
 from loguru import logger
 from mqt.ddsim import DDSIMProvider
-from qiskit.qasm2 import loads
+from qiskit.qasm3 import loads
 
 from .libs.return_objects import ErrorResponse, ResultResponse
 
@@ -22,13 +22,13 @@ def run(data: dict[str, Any] | None = None, params: dict[str, Any] | None = None
     Returns:
         response: Response as arbitrary json-serializable dict or an error to be passed back to the client
     """
-    qc_qasm2: str | None = data.get("qc")
-    if qc_qasm2 is None:
+    qc_qasm: str | None = data.get("qc")
+    if qc_qasm is None:
         return ErrorResponse(code="400", detail="No input circuit provided.")
 
     shots: int = params.get("shots", 1024)
 
-    qc = loads(qc_qasm2)
+    qc = loads(qc_qasm)
 
     provider = DDSIMProvider()
     backend = provider.get_backend("qasm_simulator")
