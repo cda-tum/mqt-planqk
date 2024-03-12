@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "2.4.3"
+  version: "2.5.0"
   title: MQT QCEC
   description: |
     API description of the MQT QCEC service.
