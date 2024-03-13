@@ -8,7 +8,7 @@ from typing import Any
 
 from loguru import logger
 from mqt.qmap import Architecture, compile
-from qiskit.qasm3 import loads
+from qiskit import QuantumCircuit, qasm2, qasm3
 
 from .libs.return_objects import ErrorResponse, ResultResponse
 
@@ -41,7 +41,13 @@ def run(data: dict[str, Any] | None = None, params: dict[str, Any] | None = None
     # Configuration options for the mapper
     method = params.get("method", "heuristic")
 
-    qc = loads(qc_qasm)
+    try:
+        qc = QuantumCircuit.from_qasm_str(qc_qasm)
+    except qasm2.QASM2ParseError:
+        try:
+            qc = qasm3.loads(qc_qasm)
+        except qasm3.QASM3ImporterError as e:
+            return ErrorResponse(code="400", detail=f"Invalid input circuit provided. Error: {e}")
 
     logger.info("Starting execution...")
     start_time = time.time()

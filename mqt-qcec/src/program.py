@@ -7,7 +7,7 @@ from typing import Any
 
 from loguru import logger
 from mqt.qcec import verify
-from qiskit.qasm3 import loads
+from qiskit import QuantumCircuit, qasm2, qasm3
 
 from .libs.return_objects import ErrorResponse, ResultResponse
 
@@ -38,8 +38,21 @@ def run(data: dict[str, Any] | None = None, params: dict[str, Any] | None = None
     run_zx_checker = params.get("run_zx_checker", True)
     timeout = params.get("timeout", 3600.0)
 
-    qc1 = loads(qc1_qasm)
-    qc2 = loads(qc2_qasm)
+    try:
+        qc1 = QuantumCircuit.from_qasm_str(qc1_qasm)
+    except qasm2.QASM2ParseError:
+        try:
+            qc1 = qasm3.loads(qc1_qasm)
+        except qasm3.QASM3ImporterError as e:
+            return ErrorResponse(code="400", detail=f"Invalid first circuit provided. Error: {e}")
+
+    try:
+        qc2 = QuantumCircuit.from_qasm_str(qc2_qasm)
+    except qasm2.QASM2ParseError:
+        try:
+            qc2 = qasm3.loads(qc2_qasm)
+        except qasm3.QASM3ImporterError as e:
+            return ErrorResponse(code="400", detail=f"Invalid second circuit provided. Error: {e}")
 
     logger.info("Starting execution...")
     start_time = time.time()

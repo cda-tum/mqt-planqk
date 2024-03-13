@@ -7,7 +7,7 @@ from typing import Any
 
 from loguru import logger
 from mqt.ddsim import DDSIMProvider
-from qiskit.qasm3 import loads
+from qiskit import QuantumCircuit, qasm2, qasm3
 
 from .libs.return_objects import ErrorResponse, ResultResponse
 
@@ -28,7 +28,13 @@ def run(data: dict[str, Any] | None = None, params: dict[str, Any] | None = None
 
     shots: int = params.get("shots", 1024)
 
-    qc = loads(qc_qasm)
+    try:
+        qc = QuantumCircuit.from_qasm_str(qc_qasm)
+    except qasm2.QASM2ParseError:
+        try:
+            qc = qasm3.loads(qc_qasm)
+        except qasm3.QASM3ImporterError as e:
+            return ErrorResponse(code="400", detail=f"Invalid input circuit provided. Error: {e}")
 
     provider = DDSIMProvider()
     backend = provider.get_backend("qasm_simulator")
