@@ -1,13 +1,15 @@
 <p align="center">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/cda-tum/mqt-core/main/docs/_static/mqt_light.png" width="60%">
-   <img src="https://raw.githubusercontent.com/cda-tum/mqt-core/main/docs/_static/mqt_dark.png" width="60%">
- </picture>
+  <a href="https://mqt.readthedocs.io">
+   <picture>
+     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/cda-tum/mqt/main/docs/_static/mqt_light.png" width="60%">
+     <img src="https://raw.githubusercontent.com/cda-tum/mqt/main/docs/_static/mqt_dark.png" width="60%">
+   </picture>
+  </a>
 </p>
 
 # MQT as a Service @ PlanQK
 
-This repository contains services for the [PlanQK Platform](https://platform.planqk.de) based on the [Munich Quantum Toolkit](https://mqt.readthedocs.io/) that is developed by the [Chair for Design Automation](https://www.cda.cit.tum.de/) at the [Technical University of Munich](https://www.tum.de/).
+This repository contains services for the [PlanQK Platform](https://platform.planqk.de) based on the [_Munich Quantum Toolkit (MQT)_](https://mqt.readthedocs.io/) that is developed by the [Chair for Design Automation](https://www.cda.cit.tum.de/) at the [Technical University of Munich](https://www.tum.de/).
 Currently, the following services are available:
 
 - [MQT DDSIM](https://github.com/cda-tum/mqt-ddsim): A Tool for Classical Quantum Circuit Simulation based on Decision Diagrams.
@@ -84,3 +86,29 @@ docker run -it \
 If the service executed successfully, you should see something like `Job:ResulsResponse:` followed by the output you defined for your service.
 Otherwise, if you see `Job:ErrorResponse`: Bad news, something went wrong.
 However, the details of the response hopefully give you a clue what the problem was.
+
+---
+
+## Acknowledgements
+
+The Munich Quantum Toolkit has been supported by the European
+Research Council (ERC) under the European Union's Horizon 2020 research and innovation program (grant agreement
+No. 101001318), the Bavarian State Ministry for Science and Arts through the Distinguished Professorship Program, as well as the
+Munich Quantum Valley, which is supported by the Bavarian state government with funds from the Hightech Agenda Bayern Plus.
+
+<p align="center">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/cda-tum/mqt/main/docs/_static/tum_dark.svg" width="28%">
+<img src="https://raw.githubusercontent.com/cda-tum/mqt/main/docs/_static/tum_light.svg" width="28%">
+</picture>
+<picture>
+<img src="https://raw.githubusercontent.com/cda-tum/mqt/main/docs/_static/logo-bavaria.svg" width="16%">
+</picture>
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/cda-tum/mqt/main/docs/_static/erc_dark.svg" width="24%">
+<img src="https://raw.githubusercontent.com/cda-tum/mqt/main/docs/_static/erc_light.svg" width="24%">
+</picture>
+<picture>
+<img src="https://raw.githubusercontent.com/cda-tum/mqt/main/docs/_static/logo-mqv.svg" width="28%">
+</picture>
+</p>
