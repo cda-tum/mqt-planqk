@@ -1,2 +1,2 @@
 loguru
-mqt-bench==1.1.2
+mqt-bench==1.1.3
