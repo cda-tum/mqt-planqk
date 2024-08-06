@@ -7,7 +7,7 @@ import time
 from typing import Any
 
 from loguru import logger
-from mqt.qmap import Architecture, compile
+from mqt.qmap import Architecture, compile  # noqa: A004
 from qiskit import QuantumCircuit, qasm2, qasm3
 
 from .libs.return_objects import ErrorResponse, ResultResponse
