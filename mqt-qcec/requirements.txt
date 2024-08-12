@@ -1,2 +1,2 @@
 loguru
-mqt-qcec==2.6.0
+mqt-qcec==2.7.0
