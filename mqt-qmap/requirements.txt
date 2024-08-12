@@ -1,2 +1,2 @@
 loguru
-mqt-qmap==2.5.1
+mqt-qmap==2.6.0
