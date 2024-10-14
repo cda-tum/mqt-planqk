@@ -1,2 +1,2 @@
 loguru
-mqt-ddsim==1.23.0
+mqt-ddsim==1.24.0
