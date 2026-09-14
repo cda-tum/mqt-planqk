@@ -12,7 +12,7 @@ from qiskit.qasm2 import dumps
 from .libs.return_objects import ErrorResponse, ResultResponse
 
 
-def run(data: dict[str, Any] | None = None, params: dict[str, Any] | None = None) -> ResultResponse | ErrorResponse:  # noqa: ARG001
+def run(data: dict[str, Any] | None = None, params: dict[str, Any] | None = None) -> ResultResponse | ErrorResponse:  # ruff: ignore[unused-function-argument]
     """Default entry point.
 
     Parameters:
