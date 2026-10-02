@@ -6,7 +6,7 @@ from loguru import logger
 
 
 class LogHandler(logging.Handler):
-    def emit(self, record: logging.LogRecord) -> None:  # noqa: PLR6301
+    def emit(self, record: logging.LogRecord) -> None:  # ruff: ignore[no-self-use]
         # get Loguru level if it exists
         try:
             level = logger.level(record.levelname).name
